@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+bin/web_exec "setup:upgrade"

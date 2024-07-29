@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker compose exec mysql mysql -uroot -proot -e "drop database magento; create database magento;";
+docker exec -i mysql mysql -uroot -proot magento < "$@"

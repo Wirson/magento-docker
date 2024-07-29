@@ -1,0 +1,61 @@
+version: '3'
+services:
+  web:
+    image: webdevops/php-nginx-dev:8.1
+    container_name: web
+    user: application
+    environment:
+      - WEB_ALIAS_DOMAIN=local.magento.com
+      - WEB_DOCUMENT_ROOT=/app/pub
+      - PHP_DATE_TIMEZONE=EST
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_MEMORY_LIMIT=8G
+      - PHP_MAX_EXECUTION_TIME=300
+      - PHP_POST_MAX_SIZE=500M
+      - PHP_UPLOAD_MAX_FILESIZE=1024M
+      - XDEBUG_MODE=debug
+      - XDEBUG_START_WITH_REQUEST=yes
+      - XDEBUG_CLIENT_PORT=9000
+      - XDEBUG_DISCOVER_CLIENT_HOST=no
+      - XDEBUG_CLIENT_HOST=172.18.0.1
+      - PHP_IDE_CONFIG=serverName=_
+    volumes:
+      - ../magento:/app:cached
+      - ./vhost.conf:/opt/docker/etc/nginx/vhost.conf
+    ports:
+      - "80:80"
+      - "443:443"
+      - "1025:1025"
+      - "32823:22"
+    links:
+      - mysql
+
+  mysql:
+    image: mariadb:10.6
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=magento
+    volumes:
+      - db-data:/var/lib/mysql
+
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+
+  elasticsearch:
+    image: elasticsearch:7.17.22
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "max_map_count=262144"
+      - "discovery.type=single-node"
+
+volumes:
+  db-data:
+    external: false

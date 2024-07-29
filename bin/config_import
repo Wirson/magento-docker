@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+bin/web_exec "app:config:import";
+bin/config_flush
