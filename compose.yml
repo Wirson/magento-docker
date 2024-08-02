@@ -2,6 +2,8 @@ version: '3'
 services:
   web:
     image: webdevops/php-nginx-dev:8.1
+    build:
+      context: web
     container_name: web
     user: application
     environment:

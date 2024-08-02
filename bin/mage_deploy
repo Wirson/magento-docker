@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+bin/composer install
+bin/setup_upgrade
+bin/setup_di_compile
+bin/static_content_deploy
