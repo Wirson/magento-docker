@@ -11,6 +11,10 @@ Create folder structure as:
 # First steps
 1. create project root ex. `mkdir ~/Sites/magento; cd ~/Sites/magento;`
 3. clone docker setup into `docker` directory `git@github.com:Wirson/magento-docker.git docker`
+4. clone existing repository to `magento` dir in project root, or create `magento` dir
+4. update `name` in `compose.yml` to match your project name
+5. update most `magento` literals to match your project name in `env.php` and in `bin` commands
+6. update db credentials
 4. copy `env.php` - `cp docker/env.php.local magento/app/etc/env.php`
 5. create containers `bin/start` or `docker compose up -d`
 6. add local dns entry  `sudo -- sh -c "echo '127.0.0.1 local.magento.com' >> /etc/hosts"`
@@ -40,5 +44,4 @@ user `root`
 pass `root`
 
 ### Todo
-* xDebug does not work for CLI php commands - now it should, but consider changing `XDEBUG_CLIENT_HOST` in `compose.yml`
-* implement mailcatcher/mailhog
+* create config templates and interactive script to automatically populate basic config like project name, db data, localhost 
