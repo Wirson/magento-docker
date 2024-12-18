@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
-docker compose exec mysql mysql -uroot -proot -e "drop database magento; create database magento;";
-docker exec -i mysql mysql -uroot -proot magento < "$@"
+args=$@
+if [ "$1" != "-s" ]; then
+  echo "in"
+  docker compose exec mysql mysql -uroot -proot -e "DROP DATABASE IF EXISTS magento; CREATE DATABASE magento;";
+else
+  args=${@:2}
+fi
+docker exec -i mysql mysql -uroot -proot magento < "$args"

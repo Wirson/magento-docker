@@ -1,7 +1,7 @@
-version: '3'
+name: magento
 services:
   web:
-    image: webdevops/php-nginx-dev:8.1
+    image: webdevops/php-nginx-dev:8.3
     build:
       context: web
     container_name: web
@@ -25,7 +25,7 @@ services:
       - ../magento:/app:cached
       - ./vhost.conf:/opt/docker/etc/nginx/vhost.conf
     ports:
-      - "80:80"
+      - "8080:8080"
       - "443:443"
       - "1025:1025"
       - "32823:22"
@@ -43,8 +43,28 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
+  mailcatcher:
+    image: sj26/mailcatcher
+    ports:
+      - "1080:1080"
+
+  varnish:
+    image: varnish:7.1
+    ports:
+      - "80:80"
+      - "6082:6082"
+    depends_on:
+      - web
+    links:
+      - web
+    volumes:
+      - ./varnish.vcl:/etc/varnish/default.vcl
+      - ./varnish.secret:/etc/varnish/secret
+    environment:
+      - CACHE_SIZE=256M
+
   redis:
-    image: redis:6.2
+    image: redis:7.2
     ports:
       - "6379:6379"
 

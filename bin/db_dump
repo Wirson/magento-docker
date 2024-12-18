@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker exec -i mysql mysqldump --opt -uroot -proot magento > ../local.sql
